@@ -1,0 +1,108 @@
+{
+  "info": {
+    "_postman_id": "1aa482dd-a9f4-4af0-9d67-c6b4303a497a",
+    "name": "Authentication API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Check JWT Token",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "id": "05e43225-e4f9-4821-9980-22f497e603ba",
+            "exec": [
+              "let requestBody = {",
+              "\t\"token\": pm.environment.get(\"jwtToken\")",
+              "}",
+              "pm.environment.set(\"requestBody\", JSON.stringify(requestBody));"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "noauth"
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{{requestBody}}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{authApp}}/token/check",
+          "host": [
+            "{{authApp}}"
+          ],
+          "path": [
+            "token",
+            "check"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Generate Token",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "id": "e736fdf6-188b-49c5-936c-14c26e944264",
+            "exec": [
+              "var response = JSON.parse(responseBody);",
+              "pm.environment.set(\"jwtToken\", response.token);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "name": "Content-Type",
+            "value": "application/json",
+            "type": "text"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n\t\"email\": \"william@pedrinicustodio.com\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{authApp}}/token",
+          "host": [
+            "{{authApp}}"
+          ],
+          "path": [
+            "token"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "protocolProfileBehavior": {}
+}

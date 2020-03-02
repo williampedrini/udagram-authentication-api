@@ -1,0 +1,3 @@
+type AuthenticationCheckResponseDTO = {
+    message: string;
+};
