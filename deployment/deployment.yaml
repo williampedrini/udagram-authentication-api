@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: authentication-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: authentication-api
+  template:
+    metadata:
+      labels:
+        name: authentication-api
+        version: 1.0.0
+        component: api
+    spec:
+      containers:
+        - name: authentication-api-container
+          image: williamcustodio/udagram_authentication_api
+          ports:
+            - containerPort: 8081
