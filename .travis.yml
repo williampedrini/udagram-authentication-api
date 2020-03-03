@@ -9,7 +9,7 @@ jobs:
     # to be used for the image creation.
     - stage: "Build"
       script:
-        - make build
+        - 'make build'
 
     - stage: "Image Creation"
       script:
@@ -29,13 +29,13 @@ jobs:
     # and also the creation of the configuration files used to connect to EKS.
     - stage: "Deployment Tooling Preparation"
       script:
-        - make aws-client
-        - make aws-credentials
-        - make aws-eksctl
-        - make aws-eksctl-configuration
-        - make kubectl
+        - 'make aws-client'
+        - 'make aws-credentials'
+        - 'make aws-eksctl'
+        - 'make aws-eksctl-configuration'
+        - 'make kubectl'
 
     # Performs the deployment of the new generated image to EKS.
     - stage: "Deployment"
       script:
-        - make deployment;
+        - 'make deployment'
