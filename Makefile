@@ -12,3 +12,5 @@ push-image:
 aws-credentials:
 	printf "[default]\naws_access_key_id=${AWS_ACCESS_KEY_ID}\naws_secret_access_key=${AWS_SECRET_ACCESS_KEY}\nregion=${AWS_REGION}\n" >> ~/.aws/credentials
 
+aws-check:
+	aws --version;
