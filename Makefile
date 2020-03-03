@@ -17,7 +17,6 @@ aws-client:
 	curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip";
 	unzip awscliv2.zip;
 	sudo ./aws/install;
-	/usr/local/bin/aws --version;
 
 aws-eksctl:
 	curl --silent --location "https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_linux_amd64.tar.gz" | tar xz -C /tmp;
