@@ -12,22 +12,29 @@ image:
 push-image:
 	docker push $(IMAGE)
 
-aws-credentials:
-	mkdir ~/.aws
-	echo "[default]\naws_access_key_id=${AWS_ACCESS_KEY_ID}\naws_secret_access_key=${AWS_SECRET_ACCESS_KEY}\nregion=${AWS_REGION}\n" >> ~/.aws/credentials
-
 aws-client:
 	curl "$(AWS_CLI_URL)" -o "awscliv2.zip";
 	unzip awscliv2.zip;
 	sudo ./aws/install & > /dev/null;
+
+aws-credentials:
+	mkdir ~/.aws
+	echo "[default]\naws_access_key_id=${AWS_ACCESS_KEY_ID}\naws_secret_access_key=${AWS_SECRET_ACCESS_KEY}\nregion=${AWS_REGION}\n" >> ~/.aws/credentials
 
 aws-eksctl:
 	curl --silent --location "$(AWS_EKSCTL_URL)" | tar xz -C /tmp;
 	sudo mv /tmp/eksctl /usr/local/bin;
 	eksctl version;
 
+aws-eksctl-configuration:
+	aws eks --region ${AWS_REGION} update-kubeconfig --name ${AWS_EKSCTL_CLUSTER_NAME}
+
 kubectl:
 	curl -o kubectl "$(KUBECTL_URL)";
 	chmod +x ./kubectl;
 	sudo mv ./kubectl /usr/local/bin;
 	kubectl version --short --client;
+
+deployment:
+	kubectl apply -f ./deployment/deployment.yaml;
+	kubectl apply -f ./deployment/service.yaml;
