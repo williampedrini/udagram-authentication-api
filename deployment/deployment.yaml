@@ -6,14 +6,16 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: authentication-api
+      name: authentication-api
   template:
     metadata:
       labels:
-        app: authentication-api
+        name: authentication-api
+        version: 1.0.0
+        component: api
     spec:
       containers:
-        - name: authentication-api
-          image: williamcustodio/udagram_user_api
+        - name: authentication-api-container
+          image: williamcustodio/udagram_authentication_api
           ports:
             - containerPort: 8081
