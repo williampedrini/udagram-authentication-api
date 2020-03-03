@@ -10,7 +10,7 @@ push-image:
 	docker push $(IMAGE)
 
 aws-credentials:
-	mkdir -p ~/.aws/credentials
+	mkdir ~/.aws
 	echo "[default]\naws_access_key_id=${AWS_ACCESS_KEY_ID}\naws_secret_access_key=${AWS_SECRET_ACCESS_KEY}\nregion=${AWS_REGION}\n" >> ~/.aws/credentials
 
 aws-client:
