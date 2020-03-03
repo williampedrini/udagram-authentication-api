@@ -1,6 +1,7 @@
 IMAGE := williamcustodio/udagram_authentication_api
 AWS_CLI_URL := https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
 AWS_EKSCTL_URL := https://github.com/weaveworks/eksctl/releases/download/latest_release/eksctl_linux_amd64.tar.gz
+KUBECTL_URL := https://amazon-eks.s3-us-west-2.amazonaws.com/1.14.6/2019-08-22/bin/linux/amd64/kubectl
 
 build:
 	npm run build
@@ -24,3 +25,9 @@ aws-eksctl:
 	curl --silent --location "$(AWS_EKSCTL_URL)" | tar xz -C /tmp;
 	sudo mv /tmp/eksctl /usr/local/bin;
 	eksctl version;
+
+kubectl:
+	curl -o kubectl "$(KUBECTL_URL)";
+	chmod +x ./kubectl;
+	mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin;
+	kubectl version --short --client;
