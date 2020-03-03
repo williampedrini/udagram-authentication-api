@@ -9,7 +9,6 @@ services:
 # the whole Travis build is considered a failure).
 script:
   - 'make aws-client'
-  - 'make aws-check'
   - 'make aws-credentials'
   - 'make aws-eksctl'
 
