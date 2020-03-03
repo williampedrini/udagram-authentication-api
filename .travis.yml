@@ -3,32 +3,39 @@ node_js: 12
 services:
   - 'docker'
 
-# first build the application.
-# after the test execution is done and didn't
-# fail, build the images (if this step fails
-# the whole Travis build is considered a failure).
-script:
-  - 'make aws-client'
-  - 'make aws-credentials'
-  - 'make aws-eksctl'
-  - 'make aws-eksctl-configuration'
-  - 'make kubectl'
+jobs:
+  include:
+    # Build the application and generates the artifact
+    # to be used for the image creation.
+    - stage: "Build"
+      script:
+        - make build
 
-# only execute the following instructions in
-# the case of a success (failing at this point
-# won't mark the build as a failure).
-# To have `DOCKER_USERNAME` and `DOCKER_PASSWORD`
-# filled you need to either use `travis`' cli
-# and then `travis set ..` or go to the travis
-# page of your repository and then change the
-# environment in the settings panel.
-after_success:
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-    docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-    make push-image;
-    fi
-  - 'make deployment'
+    - stage: "Image Creation"
+      script:
+        # only execute the following instructions in
+        # the case of a success (failing at this point
+        # won't mark the build as a failure).
+        # To have `DOCKER_USERNAME` and `DOCKER_PASSWORD`
+        # filled you need to either use `travis`' cli
+        # and then `travis set ..` or go to the travis
+        # page of your repository and then change the
+        # environment in the settings panel.
+        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+        - make push-image;
 
-# don't notify when things fail
-notifications:
-  email: false
+    # Install all the tools used by the deployment stage.
+    # This stage performs the installation of AWS cli, kubectl
+    # and also the creation of the configuration files used to connect to EKS.
+    - stage: "Deployment Tooling Preparation"
+      script:
+        - make aws-client
+        - make aws-credentials
+        - make aws-eksctl
+        - make aws-eksctl-configuration
+        - make kubectl
+
+    # Performs the deployment of the new generated image to EKS.
+    - stage: "Deployment"
+      script:
+        - make deployment;
