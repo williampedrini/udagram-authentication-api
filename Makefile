@@ -19,4 +19,4 @@ aws-client:
 	sudo ./aws/install;
 
 aws-check:
-	aws --version;
+	aws s3 ls;
