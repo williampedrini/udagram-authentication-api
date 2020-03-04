@@ -27,13 +27,6 @@ deployment:
 	kubectl apply -f ./deployment/deployment.yaml;
 	kubectl apply -f ./deployment/service.yaml;
 
-deployment-tools:
-	make aws-client;
-	make aws-credentials;
-	make aws-eksctl;
-	make aws-eksctl-configuration;
-	make kubectl;
-
 image:
 	docker build -t $(IMAGE) .
 

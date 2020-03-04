@@ -18,7 +18,11 @@ script:
 after_success:
   - 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
   - 'make push-image'
-  - 'make deployment-tools'
+  - 'make aws-client'
+  - 'make aws-credentials'
+  - 'make aws-eksctl'
+  - 'make aws-eksctl-configuration'
+  - 'make kubectl'
   - 'make deployment'
 
 # don't notify when things fail
