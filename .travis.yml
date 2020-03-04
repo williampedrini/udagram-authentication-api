@@ -1,21 +1,24 @@
 language: node_js
-
 node_js: 12
-
 services:
   - 'docker'
 
+# Build the application.
 script:
   - 'make build'
 
+# only execute the following instructions in
+# the case of a success (failing at this point
+# won't mark the build as a failure).
+# To have `DOCKER_USERNAME` and `DOCKER_PASSWORD`
+# filled you need to either use `travis`' cli
+# and then `travis set ..` or go to the travis
+# page of your repository and then change the
+# environment in the settings panel.
 after_success:
   - 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
   - 'make push-image'
-  - 'make aws-client'
-  - 'make aws-credentials'
-  - 'make aws-eksctl'
-  - 'make aws-eksctl-configuration'
-  - 'make kubectl'
+  - 'make deployment-tools'
   - 'make deployment'
 
 # don't notify when things fail
