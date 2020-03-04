@@ -22,7 +22,8 @@ jobs:
         # page of your repository and then change the
         # environment in the settings panel.
         - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-        - make push-image;
+        - 'make image'
+        - 'make push-image'
 
     # Install all the tools used by the deployment stage.
     # This stage performs the installation of AWS cli, kubectl
