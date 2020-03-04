@@ -1,42 +1,23 @@
 language: node_js
+
 node_js: 12
+
 services:
   - 'docker'
 
-jobs:
-  include:
-    # Build the application and generates the artifact
-    # to be used for the image creation.
-    - stage: "Build"
-      script:
-        - 'make build'
+script:
+  - 'make build'
 
-    - stage: "Image Creation"
-      script:
-        # only execute the following instructions in
-        # the case of a success (failing at this point
-        # won't mark the build as a failure).
-        # To have `DOCKER_USERNAME` and `DOCKER_PASSWORD`
-        # filled you need to either use `travis`' cli
-        # and then `travis set ..` or go to the travis
-        # page of your repository and then change the
-        # environment in the settings panel.
-        - docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-        - 'make image'
-        - 'make push-image'
+after_success:
+  - 'docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD'
+  - 'make push-image'
+  - 'make aws-client'
+  - 'make aws-credentials'
+  - 'make aws-eksctl'
+  - 'make aws-eksctl-configuration'
+  - 'make kubectl'
+  - 'make deployment'
 
-    # Install all the tools used by the deployment stage.
-    # This stage performs the installation of AWS cli, kubectl
-    # and also the creation of the configuration files used to connect to EKS.
-    - stage: "Deployment Tooling Preparation"
-      script:
-        - 'make aws-client'
-        - 'make aws-credentials'
-        - 'make aws-eksctl'
-        - 'make aws-eksctl-configuration'
-        - 'make kubectl'
-
-    # Performs the deployment of the new generated image to EKS.
-    - stage: "Deployment"
-      script:
-        - 'make deployment'
+# don't notify when things fail
+notifications:
+  email: false
