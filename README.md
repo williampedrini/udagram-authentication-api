@@ -1,4 +1,4 @@
-# Rest House API
+# Udagram Authentication API
 
 This project contains an Authentication API responsible for handling JWT token verification and generation.
 
